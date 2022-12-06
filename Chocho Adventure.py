@@ -49,7 +49,7 @@ class Game:
             Platform(self, *plat)
         self.mob_timer = 0
         pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.ogg'))
-        for i in range(8):
+        for i in range(9):
             c = Cloud(self)
             c.rect.y += 500
         self.run()
@@ -127,8 +127,8 @@ class Game:
             self.playing = False
 
         # spawn new platforms to keep same average number
-        while len(self.platforms) < 6:
-            width = random.randrange(50, 100)
+        while len(self.platforms) < 7:
+            width = random.randrange(50, 60)
             Platform(self, random.randrange(0, WIDTH - width),
                      random.randrange(-75, -30))
 
