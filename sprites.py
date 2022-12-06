@@ -147,7 +147,7 @@ class Platform(pg.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
-        self.rect.y = y
+        self.rect.y = y 
         if randrange(100) < POW_SPAWN_PCT:
             Pow(self.game, self)
 
