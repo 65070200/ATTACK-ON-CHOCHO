@@ -1,17 +1,17 @@
 # game options/settings
-TITLE = "Jumpy!"
-WIDTH = 480
-HEIGHT = 600
+TITLE = "ChoCho Jump!!"
+WIDTH = 500
+HEIGHT = 750
 FPS = 60
 FONT_NAME = 'arial'
 HS_FILE = "highscore.txt"
 SPRITESHEET = "spritesheet_jumper.png"
 
 # Player properties
-PLAYER_ACC = 0.5
-PLAYER_FRICTION = -0.12
+PLAYER_ACC = 1
+PLAYER_FRICTION = -0.2
 PLAYER_GRAV = 0.8
-PLAYER_JUMP = 20
+PLAYER_JUMP = 23
 
 # Game properties
 BOOST_POWER = 60
