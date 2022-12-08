@@ -1,4 +1,3 @@
-# Sprite classes for platform game
 import pygame as pg
 from settings import *
 from random import choice, randrange, uniform
@@ -141,13 +140,13 @@ class Platform(pg.sprite.Sprite):
         self.groups = game.all_sprites, game.platforms
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        images = [self.game.spritesheet.get_image(0, 288, 380, 94),
-                  self.game.spritesheet.get_image(213, 1662, 201, 100)]
+        images = [self.game.spritesheet.get_image(0, 96, 380, 94), #ground
+                  self.game.spritesheet.get_image(382, 408, 200, 100)] #ground_small
         self.image = choice(images)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
-        self.rect.y = y 
+        self.rect.y = y
         if randrange(100) < POW_SPAWN_PCT:
             Pow(self.game, self)
 
@@ -206,3 +205,20 @@ class Mob(pg.sprite.Sprite):
         self.rect.y += self.vy
         if self.rect.left > WIDTH + 100 or self.rect.right < -100:
             self.kill()
+
+class GameOver(pg.sprite.Sprite):
+    def __init__(self, game):
+        self._layer = COIN_LAYER
+        self.groups = game.all_sprites, game.coin
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image_gold = self.game.spritesheet.get_image(244, 1981, 61, 61)
+        self.image_gold.set_colorkey(BLACK)
+        self.image_silver = self.game.spritesheet.get_image(307, 1981, 61,61)
+        self.image_silver.set_colorkey(BLACK)
+        self.image_bronze = self.game.spritesheet.get_image(329, 1390, 60, 61)
+        self.image_bronze.set_colorkey(BLACK)
+        self.rect = self.image_gold.get_rect()
+        self.rect = self.image_silver.get_rect()
+        self.rect = self.image_bronze.get_rect()
+        
