@@ -3,7 +3,7 @@ TITLE = "ChoCho Jump!!"
 WIDTH = 500
 HEIGHT = 750
 FPS = 60
-FONT_NAME = 'arial'
+FONT_NAME = 'Phosphate'
 HS_FILE = "highscore.txt"
 SPRITESHEET = "spritesheet_jumper.png"
 
@@ -21,6 +21,7 @@ PLAYER_LAYER = 2
 PLATFORM_LAYER = 1
 POW_LAYER = 1
 MOB_LAYER = 2
+COIN_LAYER = 1
 CLOUD_LAYER = 0
 
 # Starting platforms
