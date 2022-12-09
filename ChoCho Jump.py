@@ -177,7 +177,7 @@ class Game:
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
         self.draw_text("GAME OVER", 48, RED, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("Medal", 30, WHITE, WIDTH / 3, HEIGHT / 2.5)
+        self.draw_text("GRADE", 30, WHITE, WIDTH / 3, HEIGHT / 2.5)
         self.draw_text("Logic: " + str(self.score), 22, WHITE, WIDTH * 3 / 4, HEIGHT / 2)
         self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
         if self.score > self.highscore:
@@ -187,12 +187,16 @@ class Game:
                 f.write(str(self.score))
         else:
             self.draw_text("High Logic: " + str(self.highscore), 22, WHITE, WIDTH * 3 / 4, HEIGHT / 2 + 40)
-        # if self.score < 1000:
-        #     self.
-        # if 1000 < self.score < 2000:
-        #     GameOver(self.)
-        # elif 2000 < self.score < 5000:
-        # elif self.score > 5000: 
+        if self.score < 1000:
+            self.draw_text("F", 90, WHITE, WIDTH / 3, HEIGHT / 2)
+        elif 1000 < self.score < 2000:
+            self.draw_text("D", 90, WHITE, WIDTH / 3, HEIGHT / 2)
+        elif 2000 < self.score < 5000:
+            self.draw_text("C", 90, WHITE, WIDTH / 3, HEIGHT / 2)
+        elif 3000 < self.score < 5000:
+            self.draw_text("B", 90, WHITE, WIDTH / 3, HEIGHT / 2)
+        elif self.score > 5000:
+            self.draw_text("A", 90, WHITE, WIDTH / 3, HEIGHT / 2)
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
