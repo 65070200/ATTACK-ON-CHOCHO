@@ -117,7 +117,7 @@ class Player(pg.sprite.Sprite):
                 self.last_update = now
                 self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
                 bottom = self.rect.bottom
-                self.image = self.standng_frames[self.current_frame]
+                self.image = self.standing_frames[self.current_frame]
                 # self.image = self.jump_frame
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
