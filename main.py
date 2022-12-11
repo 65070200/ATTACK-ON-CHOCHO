@@ -19,8 +19,8 @@ class Game:
     def load_data(self):
         # load high score
         self.dir = path.dirname(__file__)
-        # with open(path.join(self.dir, HS_FILE), 'r') as f:
         self.highscore = 0
+        # with open(path.join(self.dir, HS_FILE), 'r') as f:
             # try: s
             # self.highscore = int(f.read())
             # except:
@@ -49,7 +49,7 @@ class Game:
         for plat in PLATFORM_LIST:
             Platform(self, *plat)
         self.mob_timer = 0
-        pg.mixer.music.load(path.join(self.snd_dir, 'Happy Tune.ogg'))
+        pg.mixer.music.load(path.join(self.snd_dir, 'sasageyo.wav'))
         for i in range(9):
             c = Cloud(self)
             c.rect.y += 500
@@ -158,13 +158,13 @@ class Game:
 
     def show_start_screen(self):
         # game splash/start screen
-        pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.ogg'))
+        pg.mixer.music.load(path.join(self.snd_dir, 'main.wav'))
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
-        self.draw_text(TITLE, 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("Arrows to move, Space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.draw_text("Press a key to play", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
-        self.draw_text("High Logic: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
+        self.draw_text(TITLE, 70, WHITE, WIDTH / 2, HEIGHT / 4)
+        self.draw_text("Press a key to play", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        # self.draw_text("Arrows to move, Space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        # self.draw_text("High Logic: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
@@ -173,30 +173,30 @@ class Game:
         # game over/continue
         if not self.running:
             return
-        pg.mixer.music.load(path.join(self.snd_dir, 'Yippee.ogg'))
+        pg.mixer.music.load(path.join(self.snd_dir, 'main.wav'))
         pg.mixer.music.play(loops=-1)
         self.screen.fill(BGCOLOR)
-        self.draw_text("GAME OVER", 48, RED, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("GRADE", 30, WHITE, WIDTH / 3, HEIGHT / 2.5)
-        self.draw_text("Logic: " + str(self.score), 22, WHITE, WIDTH * 3 / 4, HEIGHT / 2)
-        self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.draw_text("GAME OVER", 80, RED, WIDTH / 2, HEIGHT / 6)
+        self.draw_text("GRADE", 40, WHITE, WIDTH / 2, HEIGHT / 3)
+        self.draw_text("Logic: " + str(self.score), 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4.8)
+        self.draw_text("Press a key to play again", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 3.5)
         if self.score > self.highscore:
             self.highscore = self.score
-            self.draw_text("NEW HIGH LOGIC!", 22, WHITE, WIDTH * 3 / 4, HEIGHT / 2 + 40)
+            self.draw_text("NEW HIGH LOGIC!", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4.3)
             with open(path.join(self.dir, HS_FILE), 'w') as f:
                 f.write(str(self.score))
         else:
-            self.draw_text("High Logic: " + str(self.highscore), 22, WHITE, WIDTH * 3 / 4, HEIGHT / 2 + 40)
+            self.draw_text("High Logic: " + str(self.highscore), 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4.3)
         if self.score < 1000:
-            self.draw_text("F", 90, WHITE, WIDTH / 3, HEIGHT / 2)
-        elif 1000 < self.score < 2000:
-            self.draw_text("D", 90, WHITE, WIDTH / 3, HEIGHT / 2)
-        elif 2000 < self.score < 5000:
-            self.draw_text("C", 90, WHITE, WIDTH / 3, HEIGHT / 2)
-        elif 3000 < self.score < 5000:
-            self.draw_text("B", 90, WHITE, WIDTH / 3, HEIGHT / 2)
-        elif self.score > 5000:
-            self.draw_text("A", 90, WHITE, WIDTH / 3, HEIGHT / 2)
+            self.draw_text("F", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+        elif 1000 <= self.score <= 2000:
+            self.draw_text("D", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+        elif 2000 < self.score <= 3000:
+            self.draw_text("C", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+        elif 3000 < self.score <= 4000:
+            self.draw_text("B", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+        elif self.score > 4000:
+            self.draw_text("A", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
