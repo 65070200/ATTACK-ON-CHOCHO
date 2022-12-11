@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import *
+from os import path
 from random import choice, randrange, uniform
 vec = pg.math.Vector2
 
@@ -7,6 +8,7 @@ class Spritesheet:
     # utility class for loading and parsing spritesheets
     def __init__(self, filename):
         self.spritesheet = pg.image.load(filename).convert()
+        # self.mob = pg.image.load()
 
     def get_image(self, x, y, width, height):
         # grab an image out of a larger spritesheet
@@ -34,18 +36,21 @@ class Player(pg.sprite.Sprite):
         self.acc = vec(0, 0)
 
     def load_images(self):
-        self.standing_frames = [self.game.spritesheet.get_image(614, 1063, 120, 191),
-                                self.game.spritesheet.get_image(690, 406, 120, 201)]
+        self.dir = path.dirname(__file__)
+        img_dir = path.join(self.dir, 'img')
+        self.standing_frames = [pg.image.load(path.join(img_dir, STAND))]
         for frame in self.standing_frames:
-            frame.set_colorkey(BLACK)
-        self.walk_frames_r = [self.game.spritesheet.get_image(678, 860, 120, 201),
-                              self.game.spritesheet.get_image(692, 1458, 120, 207)]
+            frame.set_colorkey(WHITE)
+        self.walk_frames_r = [pg.image.load(path.join(img_dir, STAND)),
+                              pg.image.load(path.join(img_dir, RIGHT))]
         self.walk_frames_l = []
         for frame in self.walk_frames_r:
-            frame.set_colorkey(BLACK)
+            frame.set_colorkey(WHITE)
             self.walk_frames_l.append(pg.transform.flip(frame, True, False))
-        self.jump_frame = self.game.spritesheet.get_image(382, 763, 150, 181)
-        self.jump_frame.set_colorkey(BLACK)
+        for frame in self.walk_frames_l:
+            frame.set_colorkey(WHITE)
+        self.jump_frame = pg.image.load(path.join(img_dir, JUMP))
+        self.jump_frame.set_colorkey(WHITE)
 
     def jump_cut(self):
         if self.jumping:
@@ -61,6 +66,8 @@ class Player(pg.sprite.Sprite):
             self.game.jump_sound.play()
             self.jumping = True
             self.vel.y = -PLAYER_JUMP
+            self.image = self.jump_frame
+            self.rect = self.image.get_rect()
 
     def update(self):
         self.animate()
@@ -110,7 +117,8 @@ class Player(pg.sprite.Sprite):
                 self.last_update = now
                 self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
                 bottom = self.rect.bottom
-                self.image = self.standing_frames[self.current_frame]
+                self.image = self.standng_frames[self.current_frame]
+                # self.image = self.jump_frame
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
         self.mask = pg.mask.from_surface(self.image)
@@ -171,15 +179,21 @@ class Pow(pg.sprite.Sprite):
 
 class Mob(pg.sprite.Sprite):
     def __init__(self, game):
+        self.dir = path.dirname(__file__)
+        img_dir = path.join(self.dir, 'img')
         self._layer = MOB_LAYER
         self.groups = game.all_sprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image_up = self.game.spritesheet.get_image(566, 510, 122, 139)
-        self.image_up.set_colorkey(BLACK)
-        self.image_down = self.game.spritesheet.get_image(568, 1534, 122, 135)
-        self.image_down.set_colorkey(BLACK)
-        self.image = self.image_up
+        self.enemy_r = pg.image.load(path.join(img_dir, ENEMY))
+        self.enemy_r.set_colorkey(WHITE)
+        self.enemy_l = pg.transform.flip(self.enemy_r, True, False)
+        self.enemy_l.set_colorkey(WHITE)
+        # self.image_up = self.game.spritesheet.get_image(566, 510, 122, 139)
+        # self.image_up.set_colorkey(BLACK)
+        # self.image_down = self.game.spritesheet.get_image(568, 1534, 122, 135)
+        # self.image_down.set_colorkey(BLACK)
+        self.image = self.enemy_r
         self.rect = self.image.get_rect()
         self.rect.centerx = choice([-100, WIDTH + 100])
         self.vx = randrange(1, 4)
@@ -196,9 +210,9 @@ class Mob(pg.sprite.Sprite):
             self.dy *= -1
         center = self.rect.center
         if self.dy < 0:
-            self.image = self.image_up
+            self.image = self.enemy_r
         else:
-            self.image = self.image_down
+            self.image = self.enemy_l
         self.rect = self.image.get_rect()
         self.mask = pg.mask.from_surface(self.image)
         self.rect.center = center
