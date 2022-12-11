@@ -1,11 +1,16 @@
 # game options/settings
-TITLE = "ChoCho Jump!!"
+TITLE = "Attack on ChoCho"
 WIDTH = 500
 HEIGHT = 750
 FPS = 60
-FONT_NAME = 'Phosphate'
+FONT_NAME = 'PixeloidSansBold-RpeJo.ttf'
 HS_FILE = "highscore.txt"
 SPRITESHEET = "spritesheet_jumper.png"
+STAND = 'stand.png'
+LEFT = 'left.png'
+RIGHT = 'right.png'
+JUMP = 'jump.png'
+ENEMY = 'enemy.png'
 
 # Player properties
 PLAYER_ACC = 1
@@ -14,8 +19,8 @@ PLAYER_GRAV = 0.8
 PLAYER_JUMP = 23
 
 # Game properties
-BOOST_POWER = 60
-POW_SPAWN_PCT = 7
+BOOST_POWER = 80
+POW_SPAWN_PCT = 5
 MOB_FREQ = 5000
 PLAYER_LAYER = 2
 PLATFORM_LAYER = 1
