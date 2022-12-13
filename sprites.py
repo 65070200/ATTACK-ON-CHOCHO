@@ -123,35 +123,18 @@ class Player(pg.sprite.Sprite):
                 self.rect.bottom = bottom
         self.mask = pg.mask.from_surface(self.image)
 
-class Cloud(pg.sprite.Sprite):
-    def __init__(self, game):
-        self._layer = CLOUD_LAYER
-        self.groups = game.all_sprites, game.clouds
-        pg.sprite.Sprite.__init__(self, self.groups)
-        self.game = game
-        self.image = choice(self.game.cloud_images)
-        self.image.set_colorkey(BLACK)
-        self.rect = self.image.get_rect()
-        scale = randrange(50, 101) / 100
-        self.image = pg.transform.scale(self.image, (int(self.rect.width * scale),
-                                                     int(self.rect.height * scale)))
-        self.rect.x = randrange(WIDTH - self.rect.width)
-        self.rect.y = randrange(-500, -50)
-
-    def update(self):
-        if self.rect.top > HEIGHT * 2:
-            self.kill()
-
 class Platform(pg.sprite.Sprite):
     def __init__(self, game, x, y):
+        self.dir = path.dirname(__file__)
+        img_dir = path.join(self.dir, 'img')
         self._layer = PLATFORM_LAYER
         self.groups = game.all_sprites, game.platforms
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        images = [self.game.spritesheet.get_image(0, 96, 380, 94), #ground
-                  self.game.spritesheet.get_image(382, 408, 200, 100)] #ground_small
+        images = [pg.image.load(path.join(img_dir, LARGE)), #ground
+                  pg.image.load(path.join(img_dir, SMALL))] #ground_small
         self.image = choice(images)
-        self.image.set_colorkey(BLACK)
+        self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
