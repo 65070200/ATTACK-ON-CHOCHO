@@ -13,7 +13,8 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.running = True
-        self.font_name = pg.font.match_font(FONT_NAME)
+        # self.font_name = pg.font.match_font(FONT_NAME)
+        # self.font_name = pg.font.Font('font\PixeloidSansBold-RpeJo.ttf', 0)
         self.load_data()
 
     def load_data(self):
@@ -27,10 +28,12 @@ class Game:
         # load spritesheet image
         img_dir = path.join(self.dir, 'img')
         self.spritesheet = Spritesheet(path.join(img_dir, SPRITESHEET))
+        self.bg_main = pg.image.load('img/main.png')
+        self.bg_gameplay = pg.image.load('img/cloud.png')
         # cloud images
-        self.cloud_images = []
-        for i in range(1, 4):
-            self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
+        # self.cloud_images = []
+        # for i in range(1, 4):
+        #     self.cloud_images.append(pg.image.load(path.join(img_dir, 'cloud{}.png'.format(i))).convert())
         # load sounds
         self.snd_dir = path.join(self.dir, 'snd')
         self.jump_sound = pg.mixer.Sound(path.join(self.snd_dir, 'Jump33.wav'))
@@ -39,20 +42,23 @@ class Game:
     def new(self):
         # start a new game
         self.score = 0
+        self.x_pos, self.y_pos = 0, 520
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.platforms = pg.sprite.Group()
         self.powerups = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
-        self.clouds = pg.sprite.Group()
-        self.coin = pg.sprite.Group()
+        self.background = pg.sprite.Group()
+        # self.clouds = pg.sprite.Group()
+        # self.coin = pg.sprite.Group()
         self.player = Player(self)
         for plat in PLATFORM_LIST:
             Platform(self, *plat)
         self.mob_timer = 0
         pg.mixer.music.load(path.join(self.snd_dir, 'sasageyo.wav'))
-        for i in range(9):
-            c = Cloud(self)
-            c.rect.y += 500
+        # self.screen.blit(self.bg_main, (0, 0))
+        # for i in range(9):
+        #     c = Cloud(self)
+        #     c.rect.y += 500
         self.run()
 
     def run(self):
@@ -70,7 +76,7 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
 
-        # spawn a mob?
+        # spawn a mob
         now = pg.time.get_ticks()
         if now - self.mob_timer > 5000 + random.choice([-1000, -500, 0, 500, 1000]):
             self.mob_timer = now
@@ -97,11 +103,12 @@ class Game:
 
         # if player reaches top 1/4 of screen
         if self.player.rect.top <= HEIGHT / 4:
-            if random.randrange(100) < 15:
-                Cloud(self)
+            # if random.randrange(100) < 15:
+            #     Cloud(self)
             self.player.pos.y += max(abs(self.player.vel.y), 2)
-            for cloud in self.clouds:
-                cloud.rect.y += max(abs(self.player.vel.y / 2), 2)
+            # self.screen.blit(self.bg_gameplay, (0, 0))
+            # for cloud in self.clouds:
+            #     cloud.rect.y += max(abs(self.player.vel.y / 2), 2)
             for mob in self.mobs:
                 mob.rect.y += max(abs(self.player.vel.y), 2)
             for plat in self.platforms:
@@ -150,19 +157,26 @@ class Game:
 
     def draw(self):
         # Game Loop - draw
-        self.screen.fill(BGCOLOR)
+        # self.screen.blit(self.bg_gameplay, (0, 0))
+        # self.screen.fill(BGCOLOR)
+        self.screen.blit(self.bg_main, (0, 0))
+        if self.score > 1000:
+            self.screen.blit(self.bg_gameplay, (0, 0))
         self.all_sprites.draw(self.screen)
-        self.draw_text(str(self.score), 22, WHITE, WIDTH / 2, 15)
+        self.draw_text(str(self.score), 40, WHITE, WIDTH / 2, 15)
+        self.draw_text("High Logic: " + str(self.highscore), 18, WHITE, WIDTH / 4.6, 15)
         # *after* drawing everything, flip the display
         pg.display.flip()
+        pg.display.update()
 
     def show_start_screen(self):
         # game splash/start screen
         pg.mixer.music.load(path.join(self.snd_dir, 'main.wav'))
         pg.mixer.music.play(loops=-1)
-        self.screen.fill(BGCOLOR)
-        self.draw_text(TITLE, 70, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("Press a key to play", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        # self.screen.fill(BGCOLOR)
+        self.screen.blit(self.bg_main, (0, 0))
+        self.draw_text("ATTACK ON CHOCHO", 38, WHITE, WIDTH / 2, HEIGHT / 3)
+        self.draw_text("Press any key to play", 28, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
         # self.draw_text("Arrows to move, Space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
         # self.draw_text("High Logic: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
@@ -175,28 +189,29 @@ class Game:
             return
         pg.mixer.music.load(path.join(self.snd_dir, 'main.wav'))
         pg.mixer.music.play(loops=-1)
-        self.screen.fill(BGCOLOR)
-        self.draw_text("GAME OVER", 80, RED, WIDTH / 2, HEIGHT / 6)
-        self.draw_text("GRADE", 40, WHITE, WIDTH / 2, HEIGHT / 3)
-        self.draw_text("Logic: " + str(self.score), 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4.8)
-        self.draw_text("Press a key to play again", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 3.5)
+        # self.screen.fill(BGCOLOR)
+        self.screen.blit(self.bg_main, (0, 0))
+        self.draw_text("GAME OVER", 65, RED, WIDTH / 2, HEIGHT / 40)
+        self.draw_text("GRADE", 30, WHITE, WIDTH / 2, HEIGHT / 3)
+        self.draw_text("Logic: " + str(self.score), 30, WHITE, WIDTH / 2, HEIGHT * 3 / 4.6)
+        self.draw_text("Press any key to play again", 20, WHITE, WIDTH / 2, HEIGHT * 3 / 3.45)
         if self.score > self.highscore:
             self.highscore = self.score
-            self.draw_text("NEW HIGH LOGIC!", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4.3)
+            self.draw_text("NEW HIGH LOGIC!", 30, WHITE, WIDTH / 2, HEIGHT * 3 / 3.9)
             with open(path.join(self.dir, HS_FILE), 'w') as f:
                 f.write(str(self.score))
         else:
-            self.draw_text("High Logic: " + str(self.highscore), 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4.3)
+            self.draw_text("High Logic: " + str(self.highscore), 30, WHITE, WIDTH / 2, HEIGHT * 3 / 3.9)
         if self.score < 1000:
-            self.draw_text("F", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+            self.draw_text("F", 80, WHITE, WIDTH / 2, HEIGHT / 2.3)
         elif 1000 <= self.score <= 2000:
-            self.draw_text("D", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+            self.draw_text("D", 80, WHITE, WIDTH / 2, HEIGHT / 2.3)
         elif 2000 < self.score <= 3000:
-            self.draw_text("C", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+            self.draw_text("C", 80, WHITE, WIDTH / 2, HEIGHT / 2.3)
         elif 3000 < self.score <= 4000:
-            self.draw_text("B", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+            self.draw_text("B", 80, WHITE, WIDTH / 2, HEIGHT / 2.3)
         elif self.score > 4000:
-            self.draw_text("A", 150, WHITE, WIDTH / 2, HEIGHT / 2.3)
+            self.draw_text("A", 80, WHITE, WIDTH / 2, HEIGHT / 2.3)
         pg.display.flip()
         self.wait_for_key()
         pg.mixer.music.fadeout(500)
@@ -213,7 +228,7 @@ class Game:
                     waiting = False
 
     def draw_text(self, text, size, color, x, y):
-        font = pg.font.Font(self.font_name, size)
+        font = pg.font.Font('font/PixeloidSansBold-RpeJo.ttf', size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
