@@ -6,11 +6,14 @@ FPS = 60
 FONT_NAME = 'PixeloidSansBold-RpeJo.ttf'
 HS_FILE = "highscore.txt"
 SPRITESHEET = "spritesheet_jumper.png"
+BACKGROUND = 'cloud.png'
 STAND = 'stand.png'
 LEFT = 'left.png'
 RIGHT = 'right.png'
 JUMP = 'jump.png'
 ENEMY = 'enemy.png'
+SMALL = 'small.png'
+LARGE = 'large.png'
 
 # Player properties
 PLAYER_ACC = 1
