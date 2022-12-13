@@ -1,2 +1,2 @@
-# Attack on Chocho / PSCP Project
+# Attack on Chocho | PSCP Project
 -- อธิบาย โปรเจค --
